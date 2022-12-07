@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:study_app/data_uploader_screen.dart';
+import 'package:study_app/routes/app_routes.dart';
 import 'package:study_app/screens/introduction.dart';
 import 'package:study_app/screens/splash/splash_screen.dart';
+import 'bindings/initial_binding.dart';
+import 'configs/themes/app_dark_theme.dart';
+import 'configs/themes/app_light_theme.dart';
+import 'controllers/theme_controller.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  InitialBindings().dependencies();
   runApp(MyApp());
 }
 
@@ -16,8 +23,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: AppIntroductionScreen()
+    return GetMaterialApp(
+        theme: Get.find<ThemeController>().darkTheme,
+      getPages: AppRoutes.routes()
     );
   }
 }
