@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:study_app/configs/themes/app_colors.dart';
 import 'package:study_app/widgets/app_circle_button.dart';
 import 'package:get/get.dart';
+
+import 'home/home_screen.dart';
 class AppIntroductionScreen extends StatelessWidget {
   const AppIntroductionScreen({Key? key}) : super(key: key);
 
@@ -29,9 +31,13 @@ class AppIntroductionScreen extends StatelessWidget {
             ),
               'This is a study app. You can use it as you want. If you understanda how this works you would be able to scale it'),
         AppCircleButton(
-          onTap: () => null,
+          onTap: () =>
+            Get.offAndToNamed("/home"),
           child: const Icon(Icons.arrow_forward, size: 35,)
-        )
+        ),
+          TextButton(
+              onPressed: () => Get.offAndToNamed("/home"),
+              child: Text('aa'))
         ],
       ),),)
     );

@@ -1,9 +1,15 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:study_app/services/firebase_storage_service.dart';
 
+import '../../firebase_ref/references.dart';
+import '../../models/question_paper_model.dart';
+
 class QuestionPaperController extends GetxController{
   final allPaperImages = <String>[].obs;
-
+  final allPapers = <QuestionPaperModel>[].obs;
 
   @override
   void onReady() {
@@ -11,18 +17,22 @@ class QuestionPaperController extends GetxController{
     super.onReady();
   }
 
-  getAllPapers() async {
-    List<String> imgName = [
-      'biology',
-      'chemistry',
-      'maths',
-      'physics'
-    ];
+  Future<void>getAllPapers() async {
+    List<String> imgName = ['biology', 'chemistry', 'maths', 'physics'];
     try {
-      for(var img in imgName) {
-      final imgUrl = await Get.find<FirebaseStorageService>().getImage(img);
+      QuerySnapshot<Map<String, dynamic>> data = await questionPaperRF.get();
+
+      final paperList = data.docs
+          .map((paper) => QuestionPaperModel.fromSnapshot(paper))
+          .toList();
+      allPapers.assignAll(paperList);
+
+      for(var paper in paperList) {
+      final imgUrl = await Get.find<FirebaseStorageService>().getImage(paper.title);
+      paper.imageUrl =imgUrl;
       allPaperImages.add(imgUrl!);
       }
+      allPapers.assignAll(paperList);
     } catch (e) {
       print(e);
     }
