@@ -6,6 +6,7 @@ import 'package:study_app/services/firebase_storage_service.dart';
 
 import '../../firebase_ref/references.dart';
 import '../../models/question_paper_model.dart';
+import '../auth_controller.dart';
 
 class QuestionPaperController extends GetxController{
   final allPaperImages = <String>[].obs;
@@ -36,5 +37,21 @@ class QuestionPaperController extends GetxController{
     } catch (e) {
       print(e);
     }
+  }
+
+  void navigateToQuestions({
+    required QuestionPaperModel paper, bool tryAgain = false}){
+    AuthController _authController = Get.find();
+    if(_authController.isLoggedIn()){
+      if(tryAgain) {
+        Get.back();
+       // Get.offNamed();
+    } else {
+        //Get.toNamed();
+      }
+    } else {
+      _authController.showLoginAlertDialogue();
+    });
+
   }
 }
