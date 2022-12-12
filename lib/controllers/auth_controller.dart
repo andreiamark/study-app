@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:study_app/screens/login/login_screen.dart';
 import '../controllers/auth_controller.dart';
 import '../firebase_ref/references.dart';
+import '../screens/home/home_screen.dart';
 import '../widgets/dialogs/dialogue_widget.dart';
+import 'app_logger.dart';
 
 class AuthController extends GetxController{
 
@@ -28,7 +31,7 @@ class AuthController extends GetxController{
   navigateToIntroduction();
   }
 
-  signInWithGoogle() async {
+  Future<void> signInWithGoogle() async {
     final GoogleSignIn _googleSignIn = GoogleSignIn();
     try {
       GoogleSignInAccount? account = await _googleSignIn.signIn();
@@ -40,11 +43,16 @@ class AuthController extends GetxController{
         );
         await _auth.signInWithCredential(_credential);
        await saveUser(account);
+       navigateToHomePage();
       }
     } on Exception catch(error) {
-      print(error);
-      //AppLogger.e(errpr);
+      AppLogger.e(error);
     }
+  }
+
+  User? getUser() {
+    _user.value = _auth.currentUser;
+    return _user.value;
   }
   saveUser( GoogleSignInAccount account){
   userRF.doc(account.email).set({
@@ -54,19 +62,35 @@ class AuthController extends GetxController{
   });
   }
 
+  void signOut() async {
+    AppLogger.d('Sign out');
+    try {
+      await _auth.signOut();
+    } on FirebaseAuthException catch (e) {
+      AppLogger.e(e);
+    }
+  }
+
   void navigateToIntroduction() {
     Get.offAllNamed("/introduction");
   }
-  
+  navigateToHomePage(){
+    Get.offAllNamed(HomeScreen.routeName);
+  }
   void showLoginAlertDialogue() {
     Get.dialog(Dialogs.questionStartDialog(onTap: () {
       Get.back();
-      //Navigate to Login Page
+      NavigateToLoginPage();
     }),
     barrierDismissible: false);
   }
 
-  bool isLoggedIn() {
-    _auth.currentUser != null;
+ void NavigateToLoginPage(){
+    Get.toNamed(LoginScreen.routeName);
   }
+
+  bool isLoggedIn() {
+    return _auth.currentUser != null;
+  }
+
 }

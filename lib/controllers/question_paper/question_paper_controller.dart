@@ -47,11 +47,13 @@ class QuestionPaperController extends GetxController{
         Get.back();
        // Get.offNamed();
     } else {
+        print('logged in');
         //Get.toNamed();
       }
     } else {
+      print('title is ${paper.title}');
       _authController.showLoginAlertDialogue();
-    });
+    }
 
   }
 }

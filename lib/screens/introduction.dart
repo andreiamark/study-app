@@ -30,14 +30,10 @@ class AppIntroductionScreen extends StatelessWidget {
               color: onSurfaceTextColor
             ),
               'This is a study app. You can use it as you want. If you understanda how this works you would be able to scale it'),
-        AppCircleButton(
-          onTap: () =>
-            Get.offAndToNamed("/home"),
-          child: const Icon(Icons.arrow_forward, size: 35,)
-        ),
-          TextButton(
+
+          IconButton(
               onPressed: () => Get.offAndToNamed("/home"),
-              child: Text('aa'))
+              icon: Icon(Icons.forward))
         ],
       ),),)
     );

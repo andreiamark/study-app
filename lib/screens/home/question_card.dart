@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:study_app/configs/themes/ui_parameters.dart';
+import 'package:study_app/controllers/question_paper/question_paper_controller.dart';
 import 'package:study_app/widgets/app_icon_text.dart';
 
 import '../../configs/themes/custom_text_styles.dart';
@@ -8,7 +9,7 @@ import '../../models/question_paper_model.dart';
 import 'package:get/get.dart';
 import '../../configs/themes/app_icons.dart';
 
-class QuestionCard extends StatelessWidget {
+class QuestionCard extends GetView<QuestionPaperController> {
   const QuestionCard({Key? key, required this.model}) : super(key: key);
 
   final QuestionPaperModel model;
@@ -22,7 +23,7 @@ class QuestionCard extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          print('${model.title}');
+          controller.navigateToQuestions(paper: model);
         },
         child: Padding(
         padding: EdgeInsets.all(_padding),
@@ -79,8 +80,8 @@ class QuestionCard extends StatelessWidget {
                       ],
                     ),
                     Positioned(
-                      bottom: _padding,
-                        right:_padding,
+                      bottom: -_padding,
+                        right:-_padding,
                         child: GestureDetector(
                           child: Container(
                             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20 ),
